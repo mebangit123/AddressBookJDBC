@@ -20,6 +20,8 @@ public class AddressBookDBService {
 		String sql = "insert into contact (firstName, lastName, address, city, state, zip, phoneNo, email) values(?,?,?,?,?,?,?,?)";
 		try(Connection conn = this.getConnection())
 		{
+			conn.setAutoCommit(false);
+			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, firstName);
 			pstm.setString(2, lastName);
@@ -31,6 +33,8 @@ public class AddressBookDBService {
 			pstm.setString(8, email);
 			
 			pstm.executeUpdate();
+			
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
