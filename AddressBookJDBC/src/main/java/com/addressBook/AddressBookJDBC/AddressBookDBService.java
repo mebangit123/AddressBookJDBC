@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookDBService {
+	private static  AddressBookDBService addressBookDBService;
 	Person person;
 	
 	public AddressBookDBService() {}
@@ -16,17 +17,10 @@ public class AddressBookDBService {
 	public List<Person> getAllAddressBookEntries()
 	{
 		List<Person> personContact = new ArrayList<>();
-		String jdbcURL = "jdbc:mysql://localhost:3306/addressBook";
-		String userName = "root";
-		String password = "root";
-		Connection conn = null;
-		
 		String sql = "Select * from contact";
-		try 
-		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(jdbcURL, userName, password);
-			
+		
+		try(Connection conn = this.getConnection()) 
+		{	
 			Statement statement = conn.createStatement();
 			
 			ResultSet resultSet = statement.executeQuery(sql);
@@ -45,21 +39,45 @@ public class AddressBookDBService {
 				
 				personContact.add(new Person(id, firstName, lastName, address, city, state, zip, phoneNo, email));
 			}
+		}  catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return personContact;
+	}
+	
+	public int updateContact(String state, String name) {
+		String sql = String.format("update contact set state = '%s' where firstName = '%s';",state, name);
+		try(Connection conn = this.getConnection())
+		{
+			Statement statement = conn.createStatement();
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	private Connection getConnection()
+	{
+		String jdbcURL = "jdbc:mysql://localhost:3306/addressBook";
+		String userName = "root";
+		String password = "root";
+		Connection conn = null;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(jdbcURL, userName, password);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally
-		{
-			if(conn != null)
-			{
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
-		return personContact;
+		return conn;
+	}
+	
+	public static AddressBookDBService getInstance() 
+	{
+		if(addressBookDBService == null)
+			addressBookDBService = new AddressBookDBService();
+		return addressBookDBService;
 	}
 }

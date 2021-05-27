@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookService {
-	 static List<Person> personContact = new ArrayList<>();
+	 
+	static List<Person> personContact = new ArrayList<>();
+	 private  AddressBookDBService dbService;
 	
-//	public static void main(String[] args) {
-//		getAllPersonContactFromDB();
-//		personContact.forEach(System.out::println);
-//	}
+	public AddressBookService() {
+		dbService = AddressBookDBService.getInstance();
+	}
 	
 	public void getAllPersonContactFromDB()
 	{
-		AddressBookDBService dbService = new AddressBookDBService();
 		personContact = dbService.getAllAddressBookEntries();	
 	}
 
+	public void updateAddressBookContactInformation()
+	{
+		int result = dbService.updateContact("Assam","Sony");
+		if(result == 1)
+			System.out.println("updated Succesfully");
+	}
 	public long countEntries() {
 		return personContact.size();
 	}
