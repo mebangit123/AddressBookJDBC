@@ -23,6 +23,11 @@ public class AddressBookService {
 		if(result == 1)
 			System.out.println("updated Succesfully");
 	}
+	
+	public int countNumberOfContactByCity(String city) {
+		return dbService.countNumberOfContact(city);
+	}
+	
 	public long countEntries() {
 		return personContact.size();
 	}

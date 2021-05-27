@@ -2,6 +2,7 @@ package com.addressBook.AddressBookJDBC;
 
 public class Person 
 {
+
 	private String f_name;
 	private String l_name;
 	private String address;
@@ -14,7 +15,7 @@ public class Person
 	
 	public Person(int id, String f_name, String l_name, String address, String city, String state, int zip, int phone_no,
 			String email) {
-		this.id = id;
+		this.setId(id);
 		this.f_name = f_name;
 		this.l_name = l_name;
 		this.address = address;
@@ -24,7 +25,6 @@ public class Person
 		this.phone_no = phone_no;
 		this.email = email;
 	}
-	
 	
 	public String getF_name() {
 		return f_name;
@@ -73,6 +73,12 @@ public class Person
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {

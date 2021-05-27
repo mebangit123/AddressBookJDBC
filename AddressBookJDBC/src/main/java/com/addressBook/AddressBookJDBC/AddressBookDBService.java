@@ -57,6 +57,23 @@ public class AddressBookDBService {
 		return 0;
 	}
 	
+	public int countNumberOfContact(String city) {
+		int count = 0;
+		String sql = String.format( "select count(*) from contact where city = '%s';", city );
+		try(Connection conn = this.getConnection())
+		{
+			Statement statement = conn.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			while(resultSet.next())
+			{
+				count = resultSet.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
 	private Connection getConnection()
 	{
 		String jdbcURL = "jdbc:mysql://localhost:3306/addressBook";
