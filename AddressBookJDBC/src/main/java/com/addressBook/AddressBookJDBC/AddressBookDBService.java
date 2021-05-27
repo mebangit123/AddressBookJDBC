@@ -2,6 +2,7 @@ package com.addressBook.AddressBookJDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,27 @@ public class AddressBookDBService {
 	
 	public AddressBookDBService() {}
 
+	public void addContact(String firstName, String lastName, String address, String city, String state, int zip, int phoneNo, String email) 
+	{
+		String sql = "insert into contact (firstName, lastName, address, city, state, zip, phoneNo, email) values(?,?,?,?,?,?,?,?)";
+		try(Connection conn = this.getConnection())
+		{
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, firstName);
+			pstm.setString(2, lastName);
+			pstm.setString(3, address);
+			pstm.setString(4, city);
+			pstm.setString(5, state);
+			pstm.setInt(6, zip);
+			pstm.setInt(7, phoneNo);
+			pstm.setString(8, email);
+			
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Person> getAllAddressBookEntries()
 	{
 		List<Person> personContact = new ArrayList<>();

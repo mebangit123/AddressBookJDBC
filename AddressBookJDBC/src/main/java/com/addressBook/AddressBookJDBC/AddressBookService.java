@@ -12,6 +12,16 @@ public class AddressBookService {
 		dbService = AddressBookDBService.getInstance();
 	}
 	
+	public static void main(String[] args) {
+		AddressBookService service = new AddressBookService();
+		service.addNewContact();
+	}
+	
+	public void addNewContact()
+	{
+		dbService.addContact("Evan", "Sten", "Sung", "Guwahati", "Assam", 2343, 353463434, "evan@abc.x");
+	}
+	
 	public void getAllPersonContactFromDB()
 	{
 		personContact = dbService.getAllAddressBookEntries();	
